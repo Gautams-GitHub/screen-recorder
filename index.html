@@ -11,7 +11,12 @@
     <button id="pause" disabled>Pause Recording</button>
     <button id="resume" disabled>Resume Recording</button>
     <button id="stop" disabled>Stop Recording</button>
-    <button id="download" disabled>Download Recording</button>
+    <div></div>
+    <div>
+      <label for="fileName">Enter file name: </label>
+      <input id="fileName" name="fileName" value=""></input>
+      <button id="download" disabled>Download Recording</button>
+    </div>
     <div id="timer" style="margin-top: 10px; font-size: 18px">00:00:00</div>
     <video id="video" controls style="width: 100%; margin-top: 20px"></video>
 
@@ -21,6 +26,19 @@
       let timerInterval;
       let recordingTime = 0;
 
+      let downloadFileName='downloadRecording.webm';
+      const handleInputChange=(e)=>{
+        console.log(e.target.value);
+        if(e.target.value.length==0){
+          downloadFileName='downloadRecording.webm'
+        }else{
+          downloadFileName=e.target.value?""+e.target.value+".webm":'downloadRecording.webm'
+        }
+        console.log({downloadFileName});
+      }
+      const fileNameInput=document.getElementById("fileName")
+      fileNameInput.onchange=(e)=>handleInputChange(e);
+      
       function updateTimer() {
         recordingTime++;
         const hours = String(Math.floor(recordingTime / 3600)).padStart(2, "0");
@@ -103,7 +121,7 @@
             downloadButton.addEventListener("click", () => {
               const a = document.createElement("a");
               a.href = url;
-              a.download = "recording_with_mic_and_system_audio.webm";
+              a.download = downloadFileName;
               a.click();
             });
           };
